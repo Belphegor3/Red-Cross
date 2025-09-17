@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accueil - GardeReflexe</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+      }
+      .logo {
+        display: inline-block;
+        vertical-align: middle;
+        width: 20px;
+        height: 20px;
+      }
+      .welcome {
+        margin-top: 20%;
+        font-size: 24px;
+        color: #333;
+      }
+      .button-container {
+        margin-top: 20px;
+      }
+      .button {
+        padding: 10px 20px;
+        font-size: 16px;
+        color: #fff;
+        background-color: #d9534f;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      .button:hover {
+        background-color: #c9302c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="welcome">
+      Decouvrez gardeReflexe, votre generateur de cas pratique de premiers
+      secours qui simule la realite en analysant vos reactions. {% comment %}
+      <span>g</span>
+      <img
+        src="/static/images/croix-rouge-logo.jpg"
+        alt="Croix Rouge"
+        class="logo"
+      />
+      <span>rdeReflexe</span>
+      {% endcomment %}
+    </div>
+    <div class="button-container">
+      <a href="{% url 'chatbot' %}" class="button">Generer</a>
+    </div>
+  </body>
+</html>

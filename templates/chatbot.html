@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>Vous pouvez compter sur votre coach IA 🤖</h1>
+  </body>
+</html>
+<div id="chat-container">
+  <div id="chat-box"></div>
+  <input type="text" id="user-input" placeholder="Écris ton message ici..." />
+  <button onclick="sendMessage()">Envoyer</button>
+
+  <script>
+    function sendMessage() {
+      const userInput = document.getElementById("user-input");
+      const chatBox = document.getElementById("chat-box");
+
+      if (userInput.value.trim() !== "") {
+        const userMessage = document.createElement("div");
+        userMessage.textContent = "Vous: " + userInput.value;
+        userMessage.style.color = "blue";
+        chatBox.appendChild(userMessage);
+        const botMessage = document.createElement("div");
+        botMessage.textContent =
+          "Bot: Je suis un faux chatbot. Comment puis-je t'aider ?";
+        botMessage.style.color = "green";
+        chatBox.appendChild(botMessage);
+        userInput.value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }
+  </script>
+</div>
+
+<style>
+  #chat-container {
+    width: 50%;
+    margin: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  #chat-box {
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+  #user-input {
+    width: 80%;
+    padding: 5px;
+  }
+  button {
+    padding: 5px 10px;
+  }
+</style>
