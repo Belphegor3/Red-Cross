@@ -6,3 +6,6 @@ def reception(request):
 
 def chatbot(request):
     return render(request, 'chatbot.html')
+
+def payme(request):
+    return render(request, 'payme.html')
