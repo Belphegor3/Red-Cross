@@ -1,0 +1,26 @@
+# Environnement virtuel
+.env/
+venv/
+ENV/
+
+# Fichiers sensibles
+*.env
+
+# Fichiers de base de données
+*.sqlite3
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Fichiers de logs
+*.log
+
+# Fichiers générés par l’OS
+.DS_Store
+Thumbs.db
+
+# Dossiers de config IDE
+.vscode/
+.idea/

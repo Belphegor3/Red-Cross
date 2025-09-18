@@ -1,1098 +1,1189 @@
-<!-- {% load static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
-  </head>
-  <body>
-    <h1>Vous pouvez compter sur votre coach IA 🤖</h1>
-  </body>
-</html>
-<div id="chat-container">
-  <div id="chat-box"></div>
-  <input type="text" id="user-input" placeholder="Écris ton message ici..." />
-  <button onclick="sendMessage()">Envoyer</button>
-
-  <script>
-    function sendMessage() {
-      const userInput = document.getElementById("user-input");
-      const chatBox = document.getElementById("chat-box");
-
-      if (userInput.value.trim() !== "") {
-        const userMessage = document.createElement("div");
-        userMessage.textContent = "Vous: " + userInput.value;
-        userMessage.style.color = "blue";
-        chatBox.appendChild(userMessage);
-        const botMessage = document.createElement("div");
-        botMessage.textContent =
-          "Bot: Je suis un faux chatbot. Comment puis-je t'aider ?";
-        botMessage.style.color = "green";
-        chatBox.appendChild(botMessage);
-        userInput.value = "";
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-    }
-  </script>
-</div>
-
-<style>
-  #chat-container {
-    width: 50%;
-    margin: auto;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  #chat-box {
-    height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    padding: 5px;
-  }
-  #user-input {
-    width: 80%;
-    padding: 5px;
-  }
-  button {
-    padding: 5px 10px;
-  }
-</style> -->
-
-
-<!-- { % load static %} -->
- <!-- // Nouvelles fonctions globales pour les choix dynamiques
-        window.showQCM = function() {
-            const choiceContainer = event.target.closest('.message-content').querySelector('.choice-container');
-            const qcmContainer = event.target.closest('.message-content').querySelector('.qcm-container');
-            
-            choiceContainer.style.display = 'none';
-            qcmContainer.style.display = 'block';
-            
-            setTimeout(() => {
-                qcmContainer.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-        
-        window.showCash = function() {
-            const choiceContainer = event.target.closest('.message-content').querySelector('.choice-container');
-            const cashContainer = event.target.closest('.message-content').querySelector('.cash-container');
-            
-            choiceContainer.style.display = 'none';
-            cashContainer.style.display = 'block';
-            
-            setTimeout(() => {
-                const textarea = cashContainer.querySelector('.cash-textarea');
-                textarea.focus();
-                cashContainer.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-        }
-        
-        window.selectOption = function(element, letter) {
-            const messageContent = element.closest('.message-content');
-            messageContent.querySelectorAll('.qcm-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            
-            element.classList.add('selected');
-            selectedQCMOption = letter;
-            
-            const validateBtn = messageContent.querySelector('.validate-btn');
-            validateBtn.classList.add('active');
-        }
-        
-        window.validateQCM = function() {
-            if (!selectedQCMOption) return;
-            
-            const selectedElement = event.target.closest('.message-content').querySelector('.qcm-option.selected');
-            const selectedText = selectedElement.querySelector('span').textContent;
-            const userMessage = `🎯 CARRÉ - Option ${selectedQCMOption}: ${selectedText}`;
-            
-            addMessage(userMessage, true);
-            selectedQCMOption = null; -->
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Formateur IA - PSC1 Training</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        color: #333;
+        transition: all 0.3s ease;
+      }
+
+      body.joker-mode {
+        background: linear-gradient(135deg, #e91e63 0%, #ad1457 100%);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 0;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #d32f2f;
+        text-decoration: none;
+      }
+
+      .logo::before {
+        content: "🚑";
+        font-size: 1.8rem;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 2rem;
+        list-style: none;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #555;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        color: #d32f2f;
+      }
+
+      .chat-container {
+        display: flex;
+        height: calc(100vh - 80px);
+        gap: 20px;
+        padding: 20px 0;
+      }
+
+      .sidebar {
+        width: 300px;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        height: fit-content;
+      }
+
+      .trainer-info {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        text-align: center;
+      }
+
+      .trainer-avatar {
+        width: 80px;
+        height: 80px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1rem;
+      }
+
+      .session-info {
+        background: rgba(103, 126, 234, 0.05);
+        padding: 1rem;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+        margin-bottom: 1.5rem;
+      }
+
+      .session-info h4 {
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .session-info p {
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 0.3rem;
+      }
+
+      .points-info {
+        background: rgba(76, 175, 80, 0.05);
+        padding: 1rem;
+        border-radius: 10px;
+        border-left: 4px solid #4caf50;
+      }
+
+      .points-info h4 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+      }
+
+      .points-display {
+        text-align: center;
+      }
+
+      .total-points {
+        margin-bottom: 0.8rem;
+      }
+
+      .points-number {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #4caf50;
+        text-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+      }
+
+      .points-label {
+        font-size: 0.9rem;
+        color: #666;
+        margin-left: 0.3rem;
+      }
+
+      .points-breakdown {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .point-type {
+        background: white;
+        padding: 0.5rem 0.8rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        text-align: center;
+      }
+
+      .point-icon {
+        font-size: 1rem;
+        margin-right: 0.3rem;
+      }
+
+      .point-desc {
+        font-size: 0.8rem;
+        color: #666;
+      }
+
+      .chat-main {
+        flex: 1;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .chat-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .status-indicator {
+        width: 12px;
+        height: 12px;
+        background: #4caf50;
+        border-radius: 50%;
+        animation: pulse-green 2s infinite;
+      }
+
+      @keyframes pulse-green {
+        0% {
+          opacity: 1;
         }
-        
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            color: #333;
+        50% {
+          opacity: 0.5;
         }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        100% {
+          opacity: 1;
         }
-        
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+      }
+
+      .chat-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .message {
+        display: flex;
+        gap: 1rem;
+        max-width: 80%;
+      }
+
+      .message.user {
+        align-self: flex-end;
+        flex-direction: row-reverse;
+      }
+
+      .message-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+
+      .message.bot .message-avatar {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .message.user .message-avatar {
+        background: #e3f2fd;
+        color: #1976d2;
+      }
+
+      .message-content {
+        background: white;
+        padding: 1rem 1.5rem;
+        border-radius: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      .message.user .message-content {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .message-time {
+        font-size: 0.75rem;
+        color: #999;
+        margin-top: 0.5rem;
+      }
+
+      .message.user .message-time {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .scenario-card {
+        background: rgba(255, 193, 7, 0.1);
+        border: 2px solid rgba(255, 193, 7, 0.3);
+        border-radius: 15px;
+        padding: 1rem;
+        margin: 1rem 0;
+      }
+
+      .scenario-card h4 {
+        color: #f57c00;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .typing-indicator {
+        display: none;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0;
+      }
+
+      .typing-dots {
+        display: flex;
+        gap: 4px;
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        background: #667eea;
+        border-radius: 50%;
+        animation: typing 1.4s infinite;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typing {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
         }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
+        30% {
+          transform: translateY(-10px);
         }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #d32f2f;
-            text-decoration: none;
+      }
+
+      .chat-input {
+        background: white;
+        border-top: 1px solid #eee;
+        padding: 1.5rem;
+      }
+
+      .input-container {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .chat-input input {
+        flex: 1;
+        padding: 1rem 1.5rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 1rem;
+        outline: none;
+        transition: all 0.3s ease;
+      }
+
+      .chat-input input:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(103, 126, 234, 0.1);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .send-btn,
+      .joker-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+      }
+
+      .send-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .send-btn.mic-mode {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+      }
+
+      .send-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(103, 126, 234, 0.4);
+      }
+
+      .send-btn.mic-mode:hover {
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+      }
+
+      .joker-btn {
+        background: linear-gradient(135deg, #e91e63 0%, #ad1457 100%);
+        color: white;
+        position: relative;
+      }
+
+      .joker-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(233, 30, 99, 0.4);
+      }
+
+      .joker-btn::after {
+        content: "🃏";
+        font-size: 1.5rem;
+      }
+
+      .joker-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(233, 30, 99, 0.95);
+        backdrop-filter: blur(10px);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
-        
-        .logo::before {
-            content: "🚑";
-            font-size: 1.8rem;
+        to {
+          opacity: 1;
         }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
+      }
+
+      .joker-content {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        max-width: 800px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        animation: slideUp 0.3s ease;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
         }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: #555;
-            font-weight: 500;
-            transition: color 0.3s ease;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        
-        .nav-links a:hover {
-            color: #d32f2f;
-        }
-        
+      }
+
+      .joker-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .joker-header h2 {
+        color: #e91e63;
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .joker-scenario {
+        background: rgba(255, 193, 7, 0.1);
+        border: 2px solid rgba(255, 193, 7, 0.3);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .joker-scenario h4 {
+        color: #f57c00;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+      }
+
+      .joker-options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .joker-option {
+        background: white;
+        border: 3px solid #e0e0e0;
+        border-radius: 15px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .joker-option:hover {
+        border-color: #e91e63;
+        background: rgba(233, 30, 99, 0.05);
+        transform: translateY(-2px);
+      }
+
+      .joker-option.selected {
+        border-color: #e91e63;
+        background: linear-gradient(135deg, #e91e63 0%, #ad1457 100%);
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .option-letter {
+        background: #e91e63;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        flex-shrink: 0;
+      }
+
+      .joker-option.selected .option-letter {
+        background: white;
+        color: #e91e63;
+      }
+
+      .joker-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      .joker-validate {
+        background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      .joker-validate.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .joker-validate:hover.active {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+      }
+
+      .joker-cancel {
+        background: #f44336;
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: 25px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .joker-cancel:hover {
+        background: #d32f2f;
+        transform: translateY(-2px);
+      }
+
+      @media (max-width: 768px) {
         .chat-container {
-            display: flex;
-            height: calc(100vh - 80px);
-            gap: 20px;
-            padding: 20px 0;
+          flex-direction: column;
+          height: auto;
         }
-        
+
         .sidebar {
-            width: 300px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            height: fit-content;
-        }
-        
-        .sidebar h3 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .trainer-info {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 2rem;
-            text-align: center;
-        }
-        
-        .trainer-avatar {
-            width: 80px;
-            height: 80px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 1rem;
-        }
-        
-        .session-info {
-            background: rgba(103, 126, 234, 0.05);
-            padding: 1rem;
-            border-radius: 10px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .session-info h4 {
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-        
-        .session-info p {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 0.3rem;
-        }
-        
-        .quick-actions {
-            margin-top: 1.5rem;
-        }
-        
-        .quick-btn {
-            display: block;
-            width: 100%;
-            background: rgba(103, 126, 234, 0.1);
-            border: 2px solid rgba(103, 126, 234, 0.2);
-            color: #667eea;
-            padding: 0.8rem;
-            border-radius: 10px;
-            font-weight: 600;
-            text-decoration: none;
-            text-align: center;
-            margin-bottom: 0.5rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .quick-btn:hover {
-            background: rgba(103, 126, 234, 0.2);
-            transform: translateY(-2px);
-        }
-        
-        .chat-main {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        .chat-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-            background: #4caf50;
-            border-radius: 50%;
-            animation: pulse-green 2s infinite;
-        }
-        
-        @keyframes pulse-green {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-        
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-        
-        .message {
-            display: flex;
-            gap: 1rem;
-            max-width: 80%;
-        }
-        
-        .message.user {
-            align-self: flex-end;
-            flex-direction: row-reverse;
-        }
-        
-        .message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-        
-        .message.bot .message-avatar {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .message.user .message-avatar {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        
-        .message-content {
-            background: white;
-            padding: 1rem 1.5rem;
-            border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: relative;
-        }
-        
-        .message.user .message-content {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .message-time {
-            font-size: 0.75rem;
-            color: #999;
-            margin-top: 0.5rem;
-        }
-        
-        .message.user .message-time {
-            color: rgba(255, 255, 255, 0.8);
-        }
-        
-        .typing-indicator {
-            display: none;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 0;
-        }
-        
-        .typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-        
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background: #667eea;
-            border-radius: 50%;
-            animation: typing 1.4s infinite;
-        }
-        
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-10px); }
-        }
-        
-        .chat-input {
-            background: white;
-            border-top: 1px solid #eee;
-            padding: 1.5rem;
-        }
-        
-        .input-container {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .chat-input input {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 25px;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        
-        .chat-input input:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(103, 126, 234, 0.1);
-        }
-        
-        .send-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
-        
-        .send-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(103, 126, 234, 0.4);
-        }
-        
-        .send-btn:active {
-            transform: scale(0.95);
-        }
-        
-        .scenario-card {
-            background: rgba(255, 193, 7, 0.1);
-            border: 2px solid rgba(255, 193, 7, 0.3);
-            border-radius: 15px;
-            padding: 1rem;
-            margin: 1rem 0;
-        }
-        
-        .scenario-card h4 {
-            color: #f57c00;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .choice-container {
-            background: rgba(103, 126, 234, 0.05);
-            border: 2px solid rgba(103, 126, 234, 0.2);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin: 1rem 0;
-            text-align: center;
-        }
-        
-        .choice-title {
-            color: #2c3e50;
-            font-size: 1.1rem;
-            margin-bottom: 1rem;
-            font-weight: 600;
-        }
-        
-        .choice-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-bottom: 1rem;
-        }
-        
-        .choice-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 15px rgba(103, 126, 234, 0.3);
-        }
-        
-        .choice-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(103, 126, 234, 0.4);
-        }
-        
-        .choice-btn.carre {
-            background: linear-gradient(135deg, #e91e63 0%, #ad1457 100%);
-            box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
-        }
-        
-        .choice-btn.carre:hover {
-            box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
-        }
-        
-        .choice-btn.cash {
-            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-        }
-        
-        .choice-btn.cash:hover {
-            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-        }
-        
-        .qcm-container {
-            display: none;
-            margin-top: 1rem;
-        }
-        
-        .qcm-question {
-            background: rgba(233, 30, 99, 0.1);
-            border: 2px solid rgba(233, 30, 99, 0.2);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .qcm-question h5 {
-            color: #c2185b;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .qcm-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
-        }
-        
-        .qcm-option {
-            background: white;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .qcm-option:hover {
-            border-color: #667eea;
-            background: rgba(103, 126, 234, 0.05);
-        }
-        
-        .qcm-option.selected {
-            border-color: #667eea;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-        
-        .option-letter {
-            background: #667eea;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-        
-        .qcm-option.selected .option-letter {
-            background: white;
-            color: #667eea;
-        }
-        
-        .validate-btn {
-            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 1rem;
-            transition: all 0.3s ease;
-            opacity: 0.5;
-            pointer-events: none;
-        }
-        
-        .validate-btn.active {
-            opacity: 1;
-            pointer-events: all;
-        }
-        
-        .validate-btn:hover.active {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-        }
-        
-        .cash-container {
-            display: none;
-            margin-top: 1rem;
-        }
-        
-        .cash-input {
-            background: rgba(76, 175, 80, 0.1);
-            border: 2px solid rgba(76, 175, 80, 0.2);
-            border-radius: 10px;
-            padding: 1rem;
-        }
-        
-        .cash-input h5 {
-            color: #388e3c;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .cash-textarea {
-            width: 100%;
-            min-height: 120px;
-            padding: 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 1rem;
-            resize: vertical;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-        
-        .cash-textarea:focus {
-            border-color: #4caf50;
-            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
-        }
-        
-        @media (max-width: 768px) {
-            .chat-container {
-                flex-direction: column;
-                height: auto;
-            }
-            
-            .sidebar {
-                width: 100%;
-                order: 2;
-                margin-top: 1rem;
-            }
-            
-            .nav-links {
-                display: none;
-            }
-        }
+          width: 100%;
+          order: 2;
+          margin-top: 1rem;
+        }
+
+        .nav-links {
+          display: none;
+        }
+
+        .joker-options {
+          grid-template-columns: 1fr;
+        }
+
+        .joker-content {
+          padding: 1.5rem;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <nav class="container">
-            <a href="#" class="logo">PSC1 Training</a>
-            <ul class="nav-links">
-                <li><a href="http://localhost:8000/">Accueil</a></li>
-                <li><a href="#chat" style="color: #d32f2f;">Formateur IA</a></li>
-                <li><a href="{% url 'payme' %}">Progrès</a></li>
-            </ul>
-        </nav>
+      <nav class="container">
+        <a href="#" class="logo">gardeReflexe</a>
+        <ul class="nav-links">
+          <li><a href="{% url 'reception' %}">Accueil</a></li>
+        </ul>
+      </nav>
     </header>
-    
+
     <div class="container">
-        <div class="chat-container">
-            <aside class="sidebar">
-                <div class="trainer-info">
-                    <div class="trainer-avatar">🩺</div>
-                    <h3>Dr. Sophie Martin</h3>
-                    <p>Formatrice PSC1 Virtuelle</p>
+      <div class="chat-container">
+        <aside class="sidebar">
+          <div class="trainer-info">
+            <div class="trainer-avatar">🩺</div>
+            <h3>Dr. Sophie Martin</h3>
+            <p>Formatrice PSC1 Virtuelle</p>
+          </div>
+
+          <div class="session-info">
+            <h4>📊 Session Actuelle</h4>
+            <p><strong>Niveau :</strong> Révision</p>
+            <p><strong>Focus :</strong> Situations d'urgence</p>
+            <p><strong>Durée :</strong> 8 min</p>
+          </div>
+
+          <div class="points-info">
+            <h4>🏆 Compteur de Points</h4>
+            <div class="points-display">
+              <div class="total-points">
+                <span class="points-number" id="totalPoints">0</span>
+                <span class="points-label">points</span>
+              </div>
+              <div class="points-breakdown">
+                <div class="point-type">
+                  <span class="point-icon">✍️</span>
+                  <span class="point-desc"
+                    >Cash: <span id="cashPoints">0</span>pts</span
+                  >
                 </div>
-                
-                <div class="session-info">
-                    <h4>📊 Session Actuelle</h4>
-                    <p><strong>Niveau :</strong> Révision</p>
-                    <p><strong>Focus :</strong> Situations d'urgence</p>
-                    <p><strong>Durée :</strong> 15 min</p>
-                    <p><strong>Progression :</strong> 3/10 scénarios</p>
+                <div class="point-type">
+                  <span class="point-icon">🃏</span>
+                  <span class="point-desc"
+                    >Joker: <span id="jokerPoints">0</span>pts</span
+                  >
                 </div>
-                
-                <!-- <div class="quick-actions">
-                    <h4 style="margin-bottom: 1rem; color: #2c3e50;">⚡ Actions Rapides</h4>
-                    <button class="quick-btn" onclick="sendQuickMessage('Nouveau scénario')">🎭 Nouveau Scénario</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Rappel des gestes')">📚 Rappel des Gestes</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Aide urgence')">🚨 Aide d'Urgence</button>
-                    <button class="quick-btn" onclick="sendQuickMessage('Fin de session')">✅ Terminer la Session</button>
-                </div> -->
-            </aside>
-            
-            <main class="chat-main">
-                <div class="chat-header">
-                    <div class="status-indicator"></div>
-                    <div>
-                        <h2>Formateur IA - Session Active</h2>
-                        <p>Prêt à vous accompagner dans votre révision PSC1</p>
-                    </div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        <main class="chat-main">
+          <div class="chat-header">
+            <div class="status-indicator"></div>
+            <div>
+              <h2>Formateur IA - Session Active</h2>
+              <p>Prêt à vous accompagner dans votre révision PSC1</p>
+            </div>
+          </div>
+
+          <div class="chat-messages" id="chatMessages">
+            <div class="message bot">
+              <div class="message-avatar">🩺</div>
+              <div class="message-content">
+                <p>
+                  Bonjour ! Je suis Dr. Sophie Martin, votre formatrice PSC1
+                  virtuelle. Je suis ravie de vous retrouver pour cette session
+                  de révision.
+                </p>
+                <div class="scenario-card" id="currentScenario">
+                  <h4>🎭 Scénario Initial</h4>
+                  <p id="scenarioText">
+                    Vous vous promenez dans un parc et vous voyez une personne
+                    âgée qui tombe soudainement et ne bouge plus. Que
+                    faites-vous en premier ?
+                  </p>
                 </div>
-                
-                <div class="chat-messages" id="chatMessages">
-                    <div class="message bot">
-                        <div class="message-avatar">🩺</div>
-                        <div class="message-content">
-                            <p>Bonjour ! Je suis Dr. Sophie Martin, votre formatrice PSC1 virtuelle. Je suis ravie de vous retrouver pour cette session de révision.</p>
-                            <div class="scenario-card">
-                                <h4>🎭 Scénario Initial</h4>
-                                <p>Vous vous promenez dans un parc et vous voyez une personne âgée qui tombe soudainement et ne bouge plus. Que faites-vous en premier ?</p>
-                            </div>
-                            
-                            <div class="choice-container">
-                                <div class="choice-title">💡 Comment souhaitez-vous répondre ?</div>
-                                <div class="choice-buttons">
-                                    <button class="choice-btn carre" onclick="showQCM()">
-                                        🎯 CARRÉ
-                                        <span style="font-size: 0.9rem;">(QCM - 4 choix)</span>
-                                    </button>
-                                    <button class="choice-btn cash" onclick="showCash()">
-                                        ✍️ CASH
-                                        <span style="font-size: 0.9rem;">(Réponse libre)</span>
-                                    </button>
-                                </div>
-                                <p style="color: #666; font-size: 0.9rem; margin: 0;">Choisissez votre mode de réponse préféré !</p>
-                            </div>
-                            
-                            <div class="qcm-container" id="qcmContainer">
-                                <div class="qcm-question">
-                                    <h5>🎯 Question : Quelle est votre première action ?</h5>
-                                    <div class="qcm-options">
-                                        <div class="qcm-option" onclick="selectOption(this, 'A')">
-                                            <div class="option-letter">A</div>
-                                            <span>Je cours chercher de l'aide</span>
-                                        </div>
-                                        <div class="qcm-option" onclick="selectOption(this, 'B')">
-                                            <div class="option-letter">B</div>
-                                            <span>Je vérifie si la personne est consciente</span>
-                                        </div>
-                                        <div class="qcm-option" onclick="selectOption(this, 'C')">
-                                            <div class="option-letter">C</div>
-                                            <span>Je commence immédiatement un massage cardiaque</span>
-                                        </div>
-                                        <div class="qcm-option" onclick="selectOption(this, 'D')">
-                                            <div class="option-letter">D</div>
-                                            <span>Je la déplace dans un endroit plus sûr</span>
-                                        </div>
-                                    </div>
-                                    <button class="validate-btn" id="validateBtn" onclick="validateQCM()">Valider ma réponse</button>
-                                </div>
-                            </div>
-                            
-                            <div class="cash-container" id="cashContainer">
-                                <div class="cash-input">
-                                    <h5>✍️ Réponse libre : Décrivez vos actions</h5>
-                                    <textarea class="cash-textarea" id="cashTextarea" placeholder="Décrivez précisément ce que vous feriez dans cette situation. Soyez détaillé dans votre approche..."></textarea>
-                                    <button class="validate-btn active" onclick="validateCash()">Envoyer ma réponse</button>
-                                </div>
-                            </div>
-                            
-                            <div class="message-time">Il y a quelques secondes</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="typing-indicator" id="typingIndicator">
-                    <div class="message-avatar" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">🩺</div>
-                    <div class="typing-dots">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                    <span style="color: #666; font-size: 0.9rem;">Dr. Sophie tape...</span>
-                </div>
-                
-                <div class="chat-input">
-                    <div class="input-container">
-                        <input type="text" id="messageInput" placeholder="Tapez votre réponse ou décrivez vos actions..." />
-                        <button class="send-btn" onclick="sendMessage()">➤</button>
-                    </div>
-                </div>
-            </main>
-        </div>
+                <p>Tapez votre réponse ou utilisez le Joker 🃏 pour un QCM !</p>
+                <div class="message-time">Il y a quelques secondes</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="typing-indicator" id="typingIndicator">
+            <div
+              class="message-avatar"
+              style="
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+              "
+            >
+              🩺
+            </div>
+            <div class="typing-dots">
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+              <div class="typing-dot"></div>
+            </div>
+            <span style="color: #666; font-size: 0.9rem"
+              >Dr. Sophie tape...</span
+            >
+          </div>
+
+          <div class="chat-input">
+            <div class="input-container">
+              <input
+                type="text"
+                id="messageInput"
+                placeholder="Tapez votre réponse ou utilisez le Joker pour un QCM..."
+                oninput="toggleSendButton()"
+              />
+              <div class="action-buttons">
+                <button
+                  class="joker-btn"
+                  onclick="showJoker()"
+                  title="Mode QCM - Joker"
+                ></button>
+                <button
+                  class="send-btn mic-mode"
+                  id="sendBtn"
+                  onclick="handleSendAction()"
+                  title="Microphone"
+                >
+                  🎤
+                </button>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
-    
+
+    <!-- Joker Overlay -->
+    <div class="joker-overlay" id="jokerOverlay">
+      <div class="joker-content">
+        <div class="joker-header">
+          <h2>🃏 Mode Joker - QCM</h2>
+          <p>Choisissez la bonne réponse parmi les 4 propositions</p>
+        </div>
+
+        <div class="joker-scenario">
+          <h4>🎭 Rappel du Scénario</h4>
+          <p id="jokerScenarioText">
+            Vous vous promenez dans un parc et vous voyez une personne âgée qui
+            tombe soudainement et ne bouge plus. Que faites-vous en premier ?
+          </p>
+        </div>
+
+        <div class="joker-options" id="jokerOptions">
+          <div class="joker-option" onclick="selectJokerOption(this, 'A')">
+            <div class="option-letter">A</div>
+            <span>Je cours chercher de l'aide immédiatement</span>
+          </div>
+          <div class="joker-option" onclick="selectJokerOption(this, 'B')">
+            <div class="option-letter">B</div>
+            <span>Je vérifie si la personne est consciente</span>
+          </div>
+          <div class="joker-option" onclick="selectJokerOption(this, 'C')">
+            <div class="option-letter">C</div>
+            <span>Je commence un massage cardiaque</span>
+          </div>
+          <div class="joker-option" onclick="selectJokerOption(this, 'D')">
+            <div class="option-letter">D</div>
+            <span>Je déplace la personne en sécurité</span>
+          </div>
+        </div>
+
+        <div class="joker-actions">
+          <button class="joker-cancel" onclick="closeJoker()">Annuler</button>
+          <button
+            class="joker-validate"
+            id="jokerValidate"
+            onclick="validateJoker()"
+          >
+            Valider
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
-        const chatMessages = document.getElementById('chatMessages');
-        const messageInput = document.getElementById('messageInput');
-        const typingIndicator = document.getElementById('typingIndicator');
-        
-        let messageCount = 0;
-        let selectedQCMOption = null;
-        
-        // Réponses automatiques du bot avec nouvelles structures
-        const botResponses = [
-            {
-                message: "Excellent réflexe ! Vérifier la conscience est effectivement la première étape. La personne ne répond pas à vos appels.",
-                scenario: "🎭 Évolution du Scénario",
-                scenarioText: "Vous constatez que la personne est inconsciente. Elle semble respirer faiblement. Il y a quelques passants autour qui commencent à s'approcher. Quelle est votre prochaine action ?",
-                hasChoice: true,
-                qcm: {
-                    question: "Que faites-vous maintenant que vous avez confirmé l'inconscience ?",
-                    options: [
-                        { letter: "A", text: "Je place la personne en PLS immédiatement" },
-                        { letter: "B", text: "J'appelle le 15 et sécurise les lieux" },
-                        { letter: "C", text: "Je demande aux passants de partir" },
-                        { letter: "D", text: "Je vérifie s'il y a des blessures visibles" }
-                    ],
-                    correct: "B"
-                }
-            },
-            {
-                message: "Parfait ! Sécuriser les lieux et appeler les secours sont des priorités absolues. Le 15 a été contacté, ils arrivent dans 8 minutes.",
-                scenario: "🎭 Nouvelle Situation",
-                scenarioText: "En attendant les secours, vous remarquez que la respiration devient très irrégulière. Un passant dit être infirmier et propose son aide. Comment réagissez-vous ?",
-                hasChoice: true,
-                qcm: {
-                    question: "Un professionnel de santé propose son aide. Que décidez-vous ?",
-                    options: [
-                        { letter: "A", text: "Je refuse poliment et continue seul(e)" },
-                        { letter: "B", text: "J'accepte et on travaille ensemble" },
-                        { letter: "C", text: "Je lui demande ses diplômes d'abord" },
-                        { letter: "D", text: "Je lui laisse tout faire et je pars" }
-                    ],
-                    correct: "B"
-                }
-            },
-            {
-                message: "Très bien pensé ! La collaboration avec un professionnel présent est toujours bénéfique. Ensemble, vous surveillez les signes vitaux.",
-                scenario: "🎭 Urgence Critique",
-                scenarioText: "Soudain, la personne arrête de respirer. L'infirmier confirme l'absence de pouls. Vous devez maintenant agir rapidement !",
-                hasChoice: true,
-                qcm: {
-                    question: "Arrêt cardio-respiratoire confirmé. Quelle est la priorité ?",
-                    options: [
-                        { letter: "A", text: "Chercher un défibrillateur en premier" },
-                        { letter: "B", text: "Commencer immédiatement les compressions" },
-                        { letter: "C", text: "Faire du bouche-à-bouche d'abord" },
-                        { letter: "D", text: "Attendre l'arrivée des secours" }
-                    ],
-                    correct: "B"
-                }
-            },
-            {
-                message: "Excellent ! Votre gestion de cette situation d'urgence a été exemplaire. Les secours sont arrivés et ont pris le relais avec succès.",
-                scenario: "✅ Scénario Terminé - Bilan",
-                scenarioText: "Félicitations ! Vous avez démontré une excellente maîtrise des gestes PSC1. Score : 95/100",
-                hasChoice: false
-            }
-        ];
-        
-        function showQCM() {
-            document.querySelector('.choice-container').style.display = 'none';
-            document.getElementById('qcmContainer').style.display = 'block';
-            
-            // Scroll vers le QCM
-            setTimeout(() => {
-                document.getElementById('qcmContainer').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+      const chatMessages = document.getElementById("chatMessages");
+      const messageInput = document.getElementById("messageInput");
+      const typingIndicator = document.getElementById("typingIndicator");
+      const jokerOverlay = document.getElementById("jokerOverlay");
+      const sendBtn = document.getElementById("sendBtn");
+
+      let messageCount = 0;
+      let selectedJokerOption = null;
+      let cashResponseCount = 0; // Compteur pour les réponses cash
+      let points = {
+        total: 0,
+        cash: 0,
+        joker: 0,
+      };
+
+      // Points prédéfinis pour chaque réponse cash dans l'ordre
+      const cashPointsSequence = [15, 8, 12, 18, 6, 14, 10, 16, 4, 20, 7, 13];
+
+      let currentScenarioData = {
+        title: "🎭 Scénario Initial",
+        text: "Vous vous promenez dans un parc et vous voyez une personne âgée qui tombe soudainement et ne bouge plus. Que faites-vous en premier ?",
+        options: [
+          { letter: "A", text: "Je cours chercher de l'aide immédiatement" },
+          { letter: "B", text: "Je vérifie si la personne est consciente" },
+          { letter: "C", text: "Je commence un massage cardiaque" },
+          { letter: "D", text: "Je déplace la personne en sécurité" },
+        ],
+        correct: "B",
+      };
+
+      function toggleSendButton() {
+        const hasText = messageInput.value.trim().length > 0;
+
+        if (hasText) {
+          sendBtn.classList.remove("mic-mode");
+          sendBtn.innerHTML = "➤";
+          sendBtn.title = "Envoyer";
+        } else {
+          sendBtn.classList.add("mic-mode");
+          sendBtn.innerHTML = "🎤";
+          sendBtn.title = "Microphone";
         }
-        
-        function showCash() {
-            document.querySelector('.choice-container').style.display = 'none';
-            document.getElementById('cashContainer').style.display = 'block';
-            
-            // Focus sur le textarea
-            setTimeout(() => {
-                document.getElementById('cashTextarea').focus();
-                document.getElementById('cashContainer').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+      }
+
+      function handleSendAction() {
+        if (messageInput.value.trim().length > 0) {
+          sendMessage();
+        } else {
+          // Action du micro - pour l'instant juste décoratif
+          console.log("Micro cliqué - fonctionnalité à venir");
         }
-        
-        function selectOption(element, letter) {
-            // Désélectionner toutes les options
-            document.querySelectorAll('.qcm-option').forEach(opt => {
-                opt.classList.remove('selected');
-            });
-            
-            // Sélectionner l'option cliquée
-            element.classList.add('selected');
-            selectedQCMOption = letter;
-            
-            // Activer le bouton de validation
-            const validateBtn = document.getElementById('validateBtn');
-            validateBtn.classList.add('active');
+      }
+
+      function updatePoints(type, points_earned) {
+        points[type] += points_earned;
+        points.total += points_earned;
+
+        // Mettre à jour l'affichage
+        document.getElementById("totalPoints").textContent = points.total;
+        document.getElementById("cashPoints").textContent = points.cash;
+        document.getElementById("jokerPoints").textContent = points.joker;
+
+        // Animation du score avec feedback visuel
+        const totalElement = document.getElementById("totalPoints");
+        totalElement.style.transform = "scale(1.3)";
+        totalElement.style.color =
+          points_earned > 15
+            ? "#4caf50"
+            : points_earned > 10
+            ? "#ff9800"
+            : "#f44336";
+
+        // Créer un élément de feedback temporaire
+        const feedback = document.createElement("div");
+        feedback.style.position = "absolute";
+        feedback.style.top = "-20px";
+        feedback.style.left = "50%";
+        feedback.style.transform = "translateX(-50%)";
+        feedback.style.background =
+          points_earned > 15
+            ? "#4caf50"
+            : points_earned > 10
+            ? "#ff9800"
+            : "#f44336";
+        feedback.style.color = "white";
+        feedback.style.padding = "4px 8px";
+        feedback.style.borderRadius = "4px";
+        feedback.style.fontSize = "0.8rem";
+        feedback.style.fontWeight = "bold";
+        feedback.style.zIndex = "1000";
+        feedback.style.animation = "fadeInUp 0.5s ease";
+        feedback.textContent = `+${points_earned}pts`;
+
+        totalElement.parentElement.style.position = "relative";
+        totalElement.parentElement.appendChild(feedback);
+
+        setTimeout(() => {
+          totalElement.style.transform = "scale(1)";
+          totalElement.style.color = "#4caf50";
+          feedback.remove();
+        }, 1000);
+      }
+
+      function getCashPoints() {
+        // Retourner les points prédéfinis selon la séquence
+        const pointsToAward =
+          cashPointsSequence[cashResponseCount % cashPointsSequence.length];
+        cashResponseCount++;
+        return pointsToAward;
+      }
+
+      // Réponses automatiques du bot
+      const botResponses = [
+        {
+          message:
+            "Excellent réflexe ! Vérifier la conscience est effectivement la première étape. La personne ne répond pas à vos appels.",
+          scenario: {
+            title: "🎭 Évolution du Scénario",
+            text: "Vous constatez que la personne est inconsciente. Elle semble respirer faiblement. Il y a quelques passants autour qui commencent à s'approcher. Quelle est votre prochaine action ?",
+            options: [
+              {
+                letter: "A",
+                text: "Je place la personne en PLS immédiatement",
+              },
+              { letter: "B", text: "J'appelle le 15 et sécurise les lieux" },
+              { letter: "C", text: "Je demande aux passants de partir" },
+              {
+                letter: "D",
+                text: "Je vérifie s'il y a des blessures visibles",
+              },
+            ],
+            correct: "B",
+          },
+        },
+        {
+          message:
+            "Parfait ! Sécuriser les lieux et appeler les secours sont des priorités absolues. Le 15 a été contacté, ils arrivent dans 8 minutes.",
+          scenario: {
+            title: "🎭 Nouvelle Situation",
+            text: "En attendant les secours, vous remarquez que la respiration devient très irrégulière. Un passant dit être infirmier et propose son aide. Comment réagissez-vous ?",
+            options: [
+              { letter: "A", text: "Je refuse poliment et continue seul(e)" },
+              { letter: "B", text: "J'accepte et on travaille ensemble" },
+              { letter: "C", text: "Je lui demande ses diplômes d'abord" },
+              { letter: "D", text: "Je lui laisse tout faire et je pars" },
+            ],
+            correct: "B",
+          },
+        },
+        {
+          message:
+            "Très bien pensé ! La collaboration avec un professionnel présent est toujours bénéfique. Ensemble, vous surveillez les signes vitaux.",
+          scenario: {
+            title: "🎭 Urgence Critique",
+            text: "Soudain, la personne arrête de respirer. L'infirmier confirme l'absence de pouls. Vous devez maintenant agir rapidement !",
+            options: [
+              { letter: "A", text: "Chercher un défibrillateur en premier" },
+              { letter: "B", text: "Commencer immédiatement les compressions" },
+              { letter: "C", text: "Faire du bouche-à-bouche d'abord" },
+              { letter: "D", text: "Attendre l'arrivée des secours" },
+            ],
+            correct: "B",
+          },
+        },
+        {
+          message:
+            "Excellent ! Votre gestion de cette situation d'urgence a été exemplaire. Les secours sont arrivés et ont pris le relais avec succès.",
+          scenario: {
+            title: "✅ Scénario Terminé - Bilan",
+            text: "Félicitations ! Vous avez démontré une excellente maîtrise des gestes PSC1. Score : 95/100",
+            options: null,
+          },
+        },
+      ];
+
+      function showJoker() {
+        // Mettre à jour le contenu du joker avec le scénario actuel
+        document.getElementById("jokerScenarioText").textContent =
+          currentScenarioData.text;
+
+        // Créer les options
+        const optionsContainer = document.getElementById("jokerOptions");
+        optionsContainer.innerHTML = "";
+
+        if (currentScenarioData.options) {
+          currentScenarioData.options.forEach((option) => {
+            const optionDiv = document.createElement("div");
+            optionDiv.className = "joker-option";
+            optionDiv.onclick = () =>
+              selectJokerOption(optionDiv, option.letter);
+            optionDiv.innerHTML = `
+              <div class="option-letter">${option.letter}</div>
+              <span>${option.text}</span>
+            `;
+            optionsContainer.appendChild(optionDiv);
+          });
         }
-        
-        function validateQCM() {
-            if (!selectedQCMOption) return;
-            
-            const selectedText = document.querySelector('.qcm-option.selected span').textContent;
-            const userMessage = `🎯 CARRÉ - Option ${selectedQCMOption}: ${selectedText}`;
-            
-            // Ajouter le message de l'utilisateur
-            addMessage(userMessage, true);
-            
-            // Réinitialiser pour la prochaine fois
-            selectedQCMOption = null;
-            
-            // Afficher l'indicateur de frappe et répondre
-            showTypingIndicator();
-            setTimeout(() => {
-                hideTypingIndicator();
-                addMessage('', false);
-            }, 2000 + Math.random() * 1000);
-        }
-        
-        function validateCash() {
-            const cashText = document.getElementById('cashTextarea').value.trim();
-            if (cashText === '') return;
-            
-            const userMessage = `✍️ CASH: ${cashText}`;
-            
-            // Ajouter le message de l'utilisateur
-            addMessage(userMessage, true);
-            
-            // Vider le textarea
-            document.getElementById('cashTextarea').value = '';
-            
-            // Afficher l'indicateur de frappe et répondre
-            showTypingIndicator();
-            setTimeout(() => {
-                hideTypingIndicator();
-                addMessage('', false);
-            }, 2000 + Math.random() * 1000);
-        }
-        
-        function addMessage(content, isUser = false) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
-            
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-            
-            if (isUser) {
-                messageDiv.innerHTML = `
-                    <div class="message-avatar">👤</div>
-                    <div class="message-content">
-                        <p>${content}</p>
-                        <div class="message-time">${timeStr}</div>
-                    </div>
-                `;
-            } else {
-                const response = botResponses[messageCount % botResponses.length];
-                let choiceHTML = '';
-                
-                if (response.hasChoice) {
-                    const qcmOptionsHTML = response.qcm.options.map(opt => 
-                        `<div class="qcm-option" onclick="selectOption(this, '${opt.letter}')">
-                            <div class="option-letter">${opt.letter}</div>
-                            <span>${opt.text}</span>
-                        </div>`
-                    ).join('');
-                    
-                    choiceHTML = `
-                        <div class="choice-container">
-                            <div class="choice-title">💡 Comment souhaitez-vous répondre ?</div>
-                            <div class="choice-buttons">
-                                <button class="choice-btn carre" onclick="showQCM()">
-                                    🎯 CARRÉ
-                                    <span style="font-size: 0.9rem;">(QCM - 4 choix)</span>
-                                </button>
-                                <button class="choice-btn cash" onclick="showCash()">
-                                    ✍️ CASH
-                                    <span style="font-size: 0.9rem;">(Réponse libre)</span>
-                                </button>
-                            </div>
-                            <p style="color: #666; font-size: 0.9rem; margin: 0;">Choisissez votre mode de réponse !</p>
-                        </div>
-                        
-                        <div class="qcm-container" id="qcmContainer${messageCount}">
-                            <div class="qcm-question">
-                                <h5>🎯 Question : ${response.qcm.question}</h5>
-                                <div class="qcm-options">
-                                    ${qcmOptionsHTML}
-                                </div>
-                                <button class="validate-btn" onclick="validateQCM()">Valider ma réponse</button>
-                            </div>
-                        </div>
-                        
-                        <div class="cash-container" id="cashContainer${messageCount}">
-                            <div class="cash-input">
-                                <h5>✍️ Réponse libre : Décrivez vos actions</h5>
-                                <textarea class="cash-textarea" placeholder="Décrivez précisément ce que vous feriez dans cette situation..."></textarea>
-                                <button class="validate-btn active" onclick="validateCash()">Envoyer ma réponse</button>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                messageDiv.innerHTML = `
-                    <div class="message-avatar">🩺</div>
-                    <div class="message-content">
-                        <p>${response.message}</p>
-                        ${response.scenario ? `
-                            <div class="scenario-card">
-                                <h4>${response.scenario}</h4>
-                                <p>${response.scenarioText}</p>
-                            </div>
-                        ` : ''}
-                        ${choiceHTML}
-                        <div class="message-time">${timeStr}</div>
-                    </div>
-                `;
-                messageCount++;
-            }
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-        
-        function showTypingIndicator() {
-            typingIndicator.style.display = 'flex';
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-        
-        function hideTypingIndicator() {
-            typingIndicator.style.display = 'none';
-        }
-        
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message === '') return;
-            
-            // Ajouter le message de l'utilisateur
-            addMessage(message, true);
-            messageInput.value = '';
-            
-            // Afficher l'indicateur de frappe
-            showTypingIndicator();
-            
-            // Simuler le temps de réponse du bot
-            setTimeout(() => {
-                hideTypingIndicator();
-                addMessage('', false); // Le contenu est géré dans addMessage pour le bot
-            }, 2000 + Math.random() * 1000); // Entre 2 et 3 secondes
-        }
-        
-        function sendQuickMessage(message) {
-            addMessage(`✍️ CASH: ${message}`, true);
-            
-            // Afficher l'indicateur de frappe
-            showTypingIndicator();
-            
-            // Simuler le temps de réponse du bot
-            setTimeout(() => {
-                hideTypingIndicator();
-                addMessage('', false);
-            }, 2000 + Math.random() * 1000);
-        }
-        
-        // Gestion de l'envoi avec Entrée
-        messageInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
+
+        jokerOverlay.style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeJoker() {
+        jokerOverlay.style.display = "none";
+        document.body.style.overflow = "auto";
+        selectedJokerOption = null;
+
+        // Réinitialiser les sélections
+        document.querySelectorAll(".joker-option").forEach((opt) => {
+          opt.classList.remove("selected");
         });
-        
-        // Animation d'apparition des messages au chargement
-        document.addEventListener('DOMContentLoaded', function() {
-            const messages = document.querySelectorAll('.message');
-            messages.forEach((msg, index) => {
-                msg.style.opacity = '0';
-                msg.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                    msg.style.transition = 'all 0.5s ease';
-                    msg.style.opacity = '1';
-                    msg.style.transform = 'translateY(0)';
-                }, index * 200);
-            });
+        document.getElementById("jokerValidate").classList.remove("active");
+      }
+
+      function selectJokerOption(element, letter) {
+        // Désélectionner toutes les options
+        document.querySelectorAll(".joker-option").forEach((opt) => {
+          opt.classList.remove("selected");
         });
+
+        // Sélectionner l'option cliquée
+        element.classList.add("selected");
+        selectedJokerOption = letter;
+
+        // Activer le bouton de validation
+        document.getElementById("jokerValidate").classList.add("active");
+      }
+
+      function validateJoker() {
+        if (!selectedJokerOption) return;
+
+        const selectedText = document.querySelector(
+          ".joker-option.selected span"
+        ).textContent;
+        const userMessage = `🃏 JOKER - Option ${selectedJokerOption}: ${selectedText}`;
+
+        // Calculer les points pour le joker
+        const isCorrect = selectedJokerOption === currentScenarioData.correct;
+        const jokerPoints = isCorrect ? 10 : 0; // Moitié des points max (20/2)
+
+        // Fermer l'overlay
+        closeJoker();
+
+        // Ajouter le message de l'utilisateur
+        addMessage(userMessage, true);
+
+        // Ajouter les points
+        if (jokerPoints > 0) {
+          updatePoints("joker", jokerPoints);
+        }
+
+        // Répondre automatiquement
+        setTimeout(() => {
+          showTypingIndicator();
+          setTimeout(() => {
+            hideTypingIndicator();
+            addMessage("", false);
+          }, 2000 + Math.random() * 1000);
+        }, 500);
+      }
+
+      function addMessage(content, isUser = false) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${isUser ? "user" : "bot"}`;
+
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString("fr-FR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        if (isUser) {
+          messageDiv.innerHTML = `
+            <div class="message-avatar">👤</div>
+            <div class="message-content">
+              <p>${content}</p>
+              <div class="message-time">${timeStr}</div>
+            </div>
+          `;
+        } else {
+          const response = botResponses[messageCount % botResponses.length];
+          let scenarioHTML = "";
+
+          if (response.scenario && response.scenario.options) {
+            currentScenarioData = response.scenario;
+            scenarioHTML = `
+              <div class="scenario-card">
+                <h4>${response.scenario.title}</h4>
+                <p>${response.scenario.text}</p>
+              </div>
+              <p>Tapez votre réponse ou utilisez le Joker 🃏 pour un QCM !</p>
+            `;
+          } else if (response.scenario) {
+            scenarioHTML = `
+              <div class="scenario-card">
+                <h4>${response.scenario.title}</h4>
+                <p>${response.scenario.text}</p>
+              </div>
+            `;
+          }
+
+          messageDiv.innerHTML = `
+            <div class="message-avatar">🩺</div>
+            <div class="message-content">
+              <p>${response.message}</p>
+              ${scenarioHTML}
+              <div class="message-time">${timeStr}</div>
+            </div>
+          `;
+          messageCount++;
+        }
+
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function showTypingIndicator() {
+        typingIndicator.style.display = "flex";
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function hideTypingIndicator() {
+        typingIndicator.style.display = "none";
+      }
+
+      function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message === "") return;
+
+        // Obtenir les points prédéfinis pour cette réponse cash
+        const cashPoints = getCashPoints();
+
+        // Ajouter le message de l'utilisateur
+        addMessage(`✍️ CASH: ${message}`, true);
+        messageInput.value = "";
+
+        // Réinitialiser le bouton
+        toggleSendButton();
+
+        // Ajouter les points avec animation
+        updatePoints("cash", cashPoints);
+
+        // Afficher l'indicateur de frappe
+        showTypingIndicator();
+
+        // Simuler le temps de réponse du bot
+        setTimeout(() => {
+          hideTypingIndicator();
+          addMessage("", false);
+        }, 2000 + Math.random() * 1000);
+      }
+
+      // Gestion de l'envoi avec Entrée
+      messageInput.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+          sendMessage();
+        }
+      });
+
+      // Fermer le joker avec Échap
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && jokerOverlay.style.display === "flex") {
+          closeJoker();
+        }
+      });
+
+      // Animation d'apparition des messages au chargement
+      document.addEventListener("DOMContentLoaded", function () {
+        const messages = document.querySelectorAll(".message");
+        messages.forEach((msg, index) => {
+          msg.style.opacity = "0";
+          msg.style.transform = "translateY(20px)";
+          setTimeout(() => {
+            msg.style.transition = "all 0.5s ease";
+            msg.style.opacity = "1";
+            msg.style.transform = "translateY(0)";
+          }, index * 200);
+        });
+      });
     </script>
-</body>
+  </body>
 </html>
