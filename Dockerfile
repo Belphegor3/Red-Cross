@@ -15,4 +15,4 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD [".env/local/bin/python", "manage.py", "runserver", "localhost:8000"]
+CMD [".env/bin/python", "manage.py", "runserver", "localhost:8000"]
