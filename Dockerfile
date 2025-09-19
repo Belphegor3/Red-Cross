@@ -1,11 +1,6 @@
 FROM python:3.9-slim
 
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
 WORKDIR /app
-
-
 
 RUN apt-get update && apt-get install -y \
   build-essential \
@@ -20,4 +15,4 @@ COPY . /app/
 
 EXPOSE 8000
 
-CMD [".env/bin/python", "manage.py", "runserver", "localhost:8000"]
+CMD [".env/local/bin/python", "manage.py", "runserver", "localhost:8000"]

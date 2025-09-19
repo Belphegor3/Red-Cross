@@ -1,17 +1,13 @@
-IMAGE_NAME = redcross_project
-CONTAINER_NAME = redcross_container
-
-all: setup clean build
+all: setup build
 
 setup:
 	virtualenv .env
 
 build:
-	docker build -t $(IMAGE_NAME) .
-
-run: build
-	docker run --name $(CONTAINER_NAME) -it $(IMAGE_NAME)
+	docker build -t red-cross .
 
 clean:
-	docker rm -f $(CONTAINER_NAME)
-	docker rmi -f $(IMAGE_NAME)
+	docker rmi -f $$(docker images -q)
+	rm -rf .env
+
+.PHONY: all setup build clean
